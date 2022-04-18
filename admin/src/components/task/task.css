@@ -1,0 +1,162 @@
+.task{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(48, 48, 48, 0.81);
+    z-index: 100;
+}
+.add_task{
+    overflow-y: scroll;
+}
+.add_task::-webkit-scrollbar{
+    width: 0px;
+}
+.task h3{
+    font-weight: 500;
+font-size: 32px;
+color: #0D062D;
+margin-bottom: 20px;
+}
+.task .add_task{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 10px 0px 0px 10px;
+    padding: 45px 30px;
+    width: 450px;
+    height: 100vh;
+}
+.task .add_task .delete{
+    text-align: center;
+    float: right;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    color:  white;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(29,45,91);
+    border-radius: 4px;
+}
+.task .form_check{
+    padding: 0px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.task .port_user{
+    width: 65%;
+    height: 120px;
+    overflow-y: scroll;
+    border: 1px solid #787486;
+border-radius: 6px;
+    margin: 30px 0;
+    padding: 10px 0;
+}
+.task .port_user .form_check span{
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+.task .form_check .circle, .task .line .circle{
+    width: 22px;
+    height: 22px;
+    border: 1px solid #A6A6A6;
+box-sizing: border-box;
+border-radius: 50%;
+cursor: pointer;
+}
+.task .form_check .circle.active, .task .line .circle.active{
+    background-color: #1CBB02;
+    border: none;
+}
+.task .control, .task .add_item{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+.task input{
+    outline: none;
+    border: 1px solid #787486;
+box-sizing: border-box;
+border-radius: 6px;
+padding: 6px 0 6px 6px;
+font-size: 16px;
+width: 40%;
+}
+.task .add_item input{
+    width: 100%;
+}
+.task .control textarea{
+    height: 80px;
+    outline: none;
+    border: 1px solid #787486;
+box-sizing: border-box;
+border-radius: 6px;
+padding: 6px 0 6px 6px;
+font-size: 16px;
+width: 65%;
+
+}
+.task label{
+    font-weight: 500;
+    font-size: 16px;
+    color: #0D062D;
+    margin-bottom: 4px;
+}
+.task .button{
+    border: none;
+    outline: none;
+    text-align: center;
+    background-color: rgb(29,45,91);
+    color: white;
+    width: 90px;
+    padding: 10px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.task .add{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.task .save{
+    border: none;
+    outline: none;
+    background-color: rgb(29,45,91);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.task .save.active{
+    display: none;
+}
+.task .line{
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    z-index: 10;
+}
+/* .task .line.active{
+    background-color: #1CBB02;
+} */
+.task .line p{
+    font-weight: 400;
+font-size: 16px;
+color: #787486;
+margin: 0;
+margin-left: 10px;
+}

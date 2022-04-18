@@ -1,0 +1,55 @@
+.conversation{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 6px;
+    transition: 0.4s;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #E5E5E5;
+}
+.conversation:hover{
+    background-color: #E5E5E5;
+    border-radius: 10px;
+}
+.conversation img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.conversation span{
+    font-weight: 700;
+}
+.conversation .circle{
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #1CBB02;
+    color: white;
+    font-weight: 700;
+}
+.conversation .delete{
+    position: relative;
+}
+.conversation .delete .delete_items{
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #E5E5E5;
+    padding: 8px;
+    display: block;
+    background: #83C3FF;
+    transition: 0.4s;
+    z-index: 5;
+}
+.conversation .delete .delete_items.active{
+    display: none;
+
+}
+.conversation .more{
+    cursor: pointer;
+    font-size: 18px;
+}

@@ -1,0 +1,25 @@
+.menu{
+    width: 240px;
+}
+.menu ul{
+    color: rgb(29,45,91);
+    background-color: rgb(29,45,91);
+    padding-top: 100px;
+    padding-left: 25px;
+    margin: 0;
+    height: 100%;
+}
+.menu ul li{
+    color: white;
+    list-style: none;
+    margin-bottom: 20px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.menu ul li .items{
+    color: white;
+    cursor: pointer;
+}
+.menu ul li .fa{
+    margin-right: 8px;
+}

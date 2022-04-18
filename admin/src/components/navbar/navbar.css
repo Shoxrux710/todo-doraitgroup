@@ -1,0 +1,64 @@
+.navbar {
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F8F8F8;
+}
+.navbar .form{
+    display: flex;
+    align-items: center;
+}
+.navbar .name{
+    display: flex;
+    align-items: center;
+    color: rgb(29,45,91);
+    font-size: 17px;
+    font-weight: 500;
+}
+.navbar .name .fa{
+    margin-left: 5px;
+}
+.navbar h3{
+    font-style: normal;
+font-weight: normal;
+font-size: 20px;
+color: #A0AEC0;
+}
+.navbar .bell{
+    position: relative;
+    margin-right: 20px;
+}
+.navbar .bell span{
+    position: absolute;
+    top: -4px;
+    right: 6px;
+    text-align: center;
+    background-color: red;
+    color: white;
+    width: 18px;
+    line-height: 18px;
+    border-radius: 50%;
+}
+.navbar .fa{
+    background-color: white;
+    margin-right: 15px;
+    color: rgb(29,45,91);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.navbar .navbar_task{
+    background-color: rgb(29,45,91);
+    color: white;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    margin-right: 20px;
+    cursor: pointer;
+}

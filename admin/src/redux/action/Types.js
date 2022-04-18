@@ -1,0 +1,6 @@
+export const USER_TO_PROFILE = "USER_TO_PROFILE"
+export const LOGOUT = "LOGOUT"
+export const PROFILE_IMAGES = "PROFILE_IMAGES"
+export const COUNT = "COUNT"
+export const TASK_SHOW = "TASK_SHOW"
+export const TASK_ID = "TASK_ID"
