@@ -1,9 +1,14 @@
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     padding: 15px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #F8F8F8;
+    z-index: 100;
 }
 .navbar .form{
     display: flex;
@@ -20,14 +25,15 @@
     margin-left: 5px;
 }
 .navbar h3{
-    font-style: normal;
-font-weight: normal;
-font-size: 20px;
-color: #A0AEC0;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+color: rgb(29,45,91);
 }
 .navbar .bell{
     position: relative;
-    margin-right: 20px;
+    margin-right: 15px;
+    cursor: pointer;
 }
 .navbar .bell span{
     position: absolute;
@@ -52,7 +58,6 @@ color: #A0AEC0;
     padding: 5px;
     border-radius: 50%;
 }
-
 .navbar .navbar_task{
     background-color: rgb(29,45,91);
     color: white;
@@ -61,4 +66,39 @@ color: #A0AEC0;
     border-radius: 4px;
     margin-right: 20px;
     cursor: pointer;
+}
+.navbar .bell .button{
+    position: fixed;
+    right: 180px;
+    top: 70px;
+    height: 150px;
+    width: 240px;
+    border-top: 10px solid rgb(29,45,91);
+    background: white;
+    border-radius: 4px;
+    overflow-y: scroll;
+    z-index: 90;
+    transition: all ease-in-out 0.1s;
+    box-shadow: 0 0 10px #E5E5E5;
+}
+.navbar .bell .button.active{
+    display: none;
+}
+.navbar .bell .button .button-items{
+    text-align: start;
+    padding: 8px;
+    border-bottom: 1px solid rgb(29,45,91);
+    border-top: 1px solid rgb(29,45,91);
+    transition: all ease-in-out 0.3s;
+}
+.navbar .bell .button .button-items:hover{
+    background: #F9F9F9;
+}
+.navbar .bell .button h4{
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.navbar .bell .button p{
+    margin: 0;
+    font-size: 15px;
 }

@@ -11,7 +11,7 @@ const taskSchema = new Schema({
     },
     group: {
         type: String,
-        required: true
+        default: null
     },
     taskArray: [
         {
@@ -23,20 +23,26 @@ const taskSchema = new Schema({
         }
     ],
     array: {
-        type: Array
-    },
-    endDate: {
-        type: String,
+        type: Array,
         required: true
     },
     date: {
-        type: Date,
-        default: new Date()
+        type: Date
     },
     status: {
         type: String,
         enum: ['one', 'two', 'three', 'four'],
         default: 'one'
+    },
+    didline: {
+        isDidline: {
+            type: Boolean,
+            default: false
+        },
+        didlineDate: {
+            type: Date,
+            required: true
+        }
     }
 })
 

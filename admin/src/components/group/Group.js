@@ -4,6 +4,7 @@ import { MdSend } from 'react-icons/md';
 import { useSelector } from 'react-redux'
 import { TiArrowRight, TiArrowLeft } from 'react-icons/ti';
 import { HiArrowSmLeft } from 'react-icons/hi';
+import { FaUserCircle } from 'react-icons/fa';
 import { FaImage } from 'react-icons/fa';
 import person from '../../images/human-clipart-old-boy-8.png'
 import { toast } from 'react-toastify'
@@ -15,7 +16,7 @@ import axios from 'axios'
 import Create from './Create'
 import './group.css'
 
-const Group = ({socket}) => {
+const Group = ({ socket }) => {
 
     const { token, id, role } = useSelector(state => state.userLogin)
     const [show, setShow] = useState(false)
@@ -29,21 +30,23 @@ const Group = ({socket}) => {
     const [newGroup, setNewGroup] = useState([])
     const [userName, setUserName] = useState("")
     const [groupImage, setGroupImage] = useState("")
+    const [avatarFront, setAvatarFront] = useState(null);
     const [menu, setMenu] = useState(false)
     const [count, setCount] = useState(0)
 
     const username = currentChat ? currentChat.name : ''
     const otherId = currentChat ? currentChat._id : ''
-    
+    const imageGroup = currentChat ? currentChat.groupImage.fileName : ''
+
     const userDate = (token) => {
         axios.get('/api/user/date', {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
+            headers: {
+                authorization: `Bearer ${token}`
+            }
         }).then(response => {
             setUserName(response.data.user)
-        })
-      }
+        }).catch(err => console.log(err))
+    }
 
     const getUser = (token) => {
         axios.get(`/api/user/other`, {
@@ -84,6 +87,7 @@ const Group = ({socket}) => {
                 setArray([id])
                 setName("")
                 getGroup(token)
+                setAvatarFront(null)
                 toast.success(response.data.successMessage)
             }).catch(e => {
                 toast.error(e.response.data.errorMessage)
@@ -100,13 +104,13 @@ const Group = ({socket}) => {
             text: newMessage,
             name: userName.name,
             date: new Date(Date.now())
-        }        
+        }
 
         axios.post('/api/group', messages, {
             headers: {
                 authorization: `Bearer ${token}`
             }
-        }).then( (response) => {
+        }).then((response) => {
             socket.emit("send_message", messages)
             // getMessage(otherId)
             setMessage((list) => [...list, messages])
@@ -128,6 +132,16 @@ const Group = ({socket}) => {
         socket.emit("join_room", otherId)
     }
 
+    let groupImg
+
+    if (avatarFront){
+        groupImg = URL.createObjectURL(avatarFront);
+    }else{
+        groupImg = <>
+        <FaUserCircle className='fa' />
+        </>
+    }
+
     useEffect(() => {
         getUser(token)
         getGroup(token)
@@ -138,34 +152,45 @@ const Group = ({socket}) => {
         getMessage(otherId)
     }, [otherId])
 
-    console.log("message", message)
-
     return (
         <div className="group">
             <div className={menu ? "telegram active" : "telegram"}>
                 <form
-                onSubmit={onRight}  
-                className={show ? "create active" : "create"}>
-                    <h3>new Group</h3>     
-                    <input 
-                    type="file" 
-                    name="groupImage"
-                    files={groupImage}
-                    onChange={e => setGroupImage(e.target.files)}
-                    />             
-                    <input
-                        value={name}
-                        name="name"
-                        onChange={(e) => setName(e.target.value)}
-                        type="text"
-                        placeholder='group'
-                    />
+                    onSubmit={onRight}
+                    className={show ? "create active" : "create"}>
+                    <h3>new Group</h3>
+                    <div className='files'>
+                        <label htmlFor='file'>
+                            {
+                                avatarFront ? <img src={groupImg} alt="" className='fa' /> : groupImg
+                            }
+                        </label>
+                        <input
+                            className='file-items'
+                            type="file"
+                            id="file"
+                            name="groupImage"
+                            files={groupImage}
+                            onChange={e => {
+                                const file = Array.from(e.target.files);
+                                setGroupImage(e.target.files)
+                                setAvatarFront(file[0]);
+                            }}
+                        />
+                        <input
+                            value={name}
+                            name="name"
+                            onChange={(e) => setName(e.target.value)}
+                            type="text"
+                            placeholder='group'
+                        />
+                    </div>
                     <div className="maps">
                         {
                             users.map((items) => {
                                 return (
                                     <>
-                                        <Create 
+                                        <Create
                                             show={show}
                                             create={items}
                                             setArray={setArray}
@@ -176,10 +201,10 @@ const Group = ({socket}) => {
                             })
                         }
                     </div>
-                    <button 
-                    type="submit"
-                    className={array.length !== 1 ? "faRight" : "faRight active"}>
-                    <TiArrowRight className='fa'/>
+                    <button
+                        type="submit"
+                        className={array.length !== 1 ? "faRight" : "faRight active"}>
+                        <TiArrowRight className='fa' />
                     </button>
                     <TiArrowLeft
                         onClick={() => {
@@ -190,11 +215,13 @@ const Group = ({socket}) => {
                     />
                 </form>
                 <div className="chatMenu">
-                    {role === 'super-admin' && <FaBars
-                        className="faBars"
-                        onClick={() => setShow(true)}
-                    />}
-                    <input type="text" placeholder='Search' />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {role === 'super-admin' && <FaBars
+                            className="faBars"
+                            onClick={() => setShow(true)}
+                        />}
+                        <input type="text" placeholder='Search' />
+                    </div>
                 </div>
                 {
                     newGroup.length ?
@@ -226,27 +253,29 @@ const Group = ({socket}) => {
                         currentChat ?
                             <>
                                 <div className="chatUser">
-                                    <HiArrowSmLeft 
-                                    onClick={() => setMenu(!menu)}
-                                    className='left'/>
+                                    <HiArrowSmLeft
+                                        onClick={() => setMenu(!menu)}
+                                        className='left' />
                                     <div className="chatFlex">
-                                        <img src={person} alt="" />
+                                        {
+                                            imageGroup ? <img src={`/group/${imageGroup}`} alt="" /> : <img src={person} alt="" />
+                                        }
                                         <p>{username}</p>
                                     </div>
                                     <div>
-                                    <FaImage className="back" onClick={() => setBackImages(!backImages)}/>
-                                    <input type="text" placeholder='Search' />
+                                        <FaImage className="back" onClick={() => setBackImages(!backImages)} />
+                                        <input type="text" placeholder='Search' />
                                     </div>
                                 </div>
-                                <div className="chatBoxTop" style={{backgroundColor: backImages ? "#83C3FF" : "#002046"}}>
+                                <div className="chatBoxTop" style={{ backgroundColor: backImages ? "#83C3FF" : "#002046" }}>
                                     <ScrollToBottom className="chatBoxTop-container">
                                         {
                                             message.map((m) => {
                                                 return (
-                                                    <ChatMessage 
-                                                    messageChat={m} 
-                                                    own={m.members[0] === id} 
-                                                    key={m._id} 
+                                                    <ChatMessage
+                                                        messageChat={m}
+                                                        own={m.members[0] === id}
+                                                        key={m._id}
                                                     />
                                                 )
                                             })

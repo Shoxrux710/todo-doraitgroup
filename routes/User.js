@@ -26,7 +26,7 @@ router.post('/', userValidator, (req, res) => {
     })
 })
 
-router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), async (req, res) => {
+router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
     const { id } = req.user
 

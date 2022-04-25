@@ -9,8 +9,6 @@ const Conversation = ({ message, count, userId, id, type, token, getGroup, role,
 
     const [showed, setShowed] = useState(false)
 
-    console.log("fsdfsdfsdfsdf", message)
-
     const oneRoom = (items) => {
         axios.delete(`/api/room/delete/${items}`)
             .then(response => {
@@ -29,8 +27,6 @@ const Conversation = ({ message, count, userId, id, type, token, getGroup, role,
             
         setShowed(false)
     }
-
-    console.log("wekfmweklfmwke", message)
 
     const images = message.groupImage ? message.groupImage.fileName : '' 
 

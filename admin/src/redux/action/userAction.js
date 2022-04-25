@@ -1,4 +1,4 @@
-import {USER_TO_PROFILE, LOGOUT, PROFILE_IMAGES, COUNT, TASK_SHOW, TASK_ID} from './Types'
+import {USER_TO_PROFILE, LOGOUT, PROFILE_IMAGES, COUNT, TASK_SHOW, TASK_ID, TASK_CARD_CALL} from './Types'
 
 
 export const userInform = (items) => {
@@ -48,5 +48,11 @@ export const taskIdShow = (items) => {
         type: TASK_ID,
         payload: items
 
+    }
+}
+
+export const taskCall = () => {
+    return {
+        type: TASK_CARD_CALL,
     }
 }

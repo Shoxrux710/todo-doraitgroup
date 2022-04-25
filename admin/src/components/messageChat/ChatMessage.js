@@ -9,8 +9,6 @@ const ChatMessage = ({own, data, socket, messageChat, setMessage, getMessage, ot
 
     const newDate = new Date(messageChat.date)
 
-    console.log("dlkdfmlvkdf", messageChat)
-
 
     const oneDelete = (id) => {
         axios.get(`/api/message/other?messageId=${id}`)
@@ -38,8 +36,6 @@ const ChatMessage = ({own, data, socket, messageChat, setMessage, getMessage, ot
                     <div className='text'>
                         <p>{messageChat.text}</p>
                     <span>{newDate.getHours()}:{newDate.getMinutes()}</span>
-                    
-                    <h3 onClick={() => oneDelete(messageChat._id)}>delete</h3>
                     </div>
                     </> : 
                     <>                    

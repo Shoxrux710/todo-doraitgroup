@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { taskShow } from '../../redux/action/userAction'
+import { taskShow, taskCall } from '../../redux/action/userAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import InputMask from 'react-input-mask';
@@ -11,19 +11,24 @@ import './task.css'
 const Task = () => {
 
 
-    const { token, id, taskId } = useSelector(state => state.userLogin)
+    const { token, id, taskId, role } = useSelector(state => state.userLogin)
     const [users, setUsers] = useState([])
     const [taskAdd, setTaskAdd] = useState("")
     const [taskArray, setTaskArray] = useState([])
     const [title, setTitle] = useState("")
     const [group, setGroup] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const [didlineDate, setDidlineDate] = useState("")
+    // const [time, setTime] = useState("")
     const [description, setDescription] = useState("")
     const [array, setArray] = useState([])
-
-    console.log("taskId", taskId)
+    const [userAll, setUserAll] = useState([])
 
     const dispatch = useDispatch()
+
+
+    const dateNow = didlineDate.split('.')
+    const endDates = new Date(Date.UTC(dateNow[2], dateNow[1] - 1, dateNow[0]))
+    const dateAfter = new Date(Date.UTC(dateNow[0], dateNow[1] - 1, dateNow[2]))
 
     const getUser = (token) => {
         axios.get(`/api/user/other`, {
@@ -35,14 +40,22 @@ const Task = () => {
         }).catch(err => console.log(err))
     }
 
+    const getUserOther = (token) => {
+        axios.get('/api/user/other', {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            setUserAll(response.data.user)
+        }).catch(err => console.log(err))
+
+    }
 
 
     const onTask = () => {
-        setTaskArray([...taskArray, {text: taskAdd}])
+        setTaskArray([...taskArray, { text: taskAdd }])
         setTaskAdd("")
     }
-
-    
 
 
     const onSubmit = () => {
@@ -50,7 +63,9 @@ const Task = () => {
             title,
             description,
             group,
-            endDate,
+            didline: {
+                didlineDate: endDates
+            },
             taskArray,
             array
         }
@@ -64,6 +79,7 @@ const Task = () => {
             }
         }).then(response => {
             dispatch(taskShow(true))
+            dispatch(taskCall())
             toast.success(response.data.successMessage)
         }).catch(err => {
             toast.error(err.response.data.errorMessage)
@@ -71,17 +87,18 @@ const Task = () => {
     }
 
     useEffect(() => {
-        if(taskId){
+        if (taskId) {
             axios.get(`/api/task/userId/${taskId}`)
-                  .then(response => {
-                      const {title, description, endDate, array, group, taskArray } = response.data.userId
-                      setTitle(title)
-                      setGroup(group)
-                      setArray(array)
-                      setTaskArray(taskArray)
-                      setDescription(description)
-                      setEndDate(endDate)
-                  })  
+                .then(response => {
+                    const { title, description, didline, array, group, taskArray } = response.data.userId
+                    setTitle(title)
+                    setGroup(group)
+                    setArray(array)
+                    setTaskArray(taskArray)
+                    setDescription(description)
+                    setDidlineDate(didline.didlineDate)
+                    console.log("numer", didline.didlineDate)
+                })
         }
     }, [taskId])
 
@@ -89,15 +106,26 @@ const Task = () => {
     const taskCircle = (id) => {
 
         for (let i = 0; i < taskArray.length; i++) {
-            if (taskArray[i]._id === id){
+            if (taskArray[i]._id === id) {
                 taskArray[i].isClick = !taskArray[i].isClick
                 setTaskArray([...taskArray])
-            }   
+            }
         }
     }
 
+
+    let arr = []
+
+    array.forEach(e => {
+        let avar = userAll.find(item => item._id === e)
+        if (avar) {
+            arr.push(avar)
+        }
+    });
+
     useEffect(() => {
         getUser(token)
+        getUserOther(token)
     }, [token])
 
     return (
@@ -109,96 +137,140 @@ const Task = () => {
                 >x</p>
                 <h3>Add Task</h3>
                 <form>
-                    <div className="control">
-                        <label>Project name</label>
-                        <input
-                            type="text"
-                            placeholder='Project name'
-                            value={title}
-                            onChange={(e) => {
-                                setTitle(e.target.value)
-                            }}
-                        />
-                    </div>
-                    <div className="control">
-                        <label>Name the task</label>
-                        <textarea
-                            type="text"
-                            placeholder='Name the task'
-                            value={description}
-                            onChange={(e) => {
-                                setDescription(e.target.value)
-                            }}
-                        />
-                    </div>
-                    <div className='add'>
-                        <div className="add_item">
-                            <label>Task</label>
-                            <input
+                    {
+                        role === 'user' ? <div className='user'><p>Project name:</p><span>{title}</span></div> :
+                            <div className="control">
+                                <label>Project name</label>
+                                <input
+                                    type="text"
+                                    placeholder='Project name'
+                                    value={title}
+                                    onChange={(e) => {
+                                        setTitle(e.target.value)
+                                    }}
+                                />
+                            </div>
+                    }
+                    {
+                        role === 'user' ? <div className='user'><p>Name the task:</p><span>{description}</span></div> : <div className="control">
+                            <label>Name the task</label>
+                            <textarea
                                 type="text"
-                                placeholder='Add task'
-                                value={taskAdd}
+                                placeholder='Name the task'
+                                value={description}
                                 onChange={(e) => {
-                                    setTaskAdd(e.target.value)
+                                    setDescription(e.target.value)
                                 }}
                             />
                         </div>
-                        <div
-                            className={taskAdd ? 'save' : 'save active'}
-                            onClick={() => onTask()}
-                        >Add task</div>
-                    </div>
+                    }
+                    {
+                        role === 'user' ? '' : <div className='add'>
+                            <div className="add_item">
+                                <label>Task</label>
+                                <input
+                                    type="text"
+                                    placeholder='Add task'
+                                    value={taskAdd}
+                                    onChange={(e) => {
+                                        setTaskAdd(e.target.value)
+                                    }}
+                                />
+                            </div>
+                            <div
+                                className={taskAdd ? 'save' : 'save active'}
+                                onClick={() => onTask()}
+                            >Add task</div>
+                        </div>
+                    }
+                    <div style={{ marginBottom: '15px', fontSize: '18px' }}>Task</div>
                     {
                         taskArray.map((items, index) => {
                             return (
                                 <ArrayTask
-                                key={index + 1}
-                                token={token}
-                                taskId={taskId}
-                                items={items}
-                                taskCircle={taskCircle}
+                                    key={index + 1}
+                                    role={role}
+                                    token={token}
+                                    taskId={taskId}
+                                    items={items}
+                                    taskCircle={taskCircle}
+                                    taskArray={taskArray}
+                                    setTaskArray={setTaskArray}
                                 />
                             )
                         })
                     }
-                    <div className='port_user'>
+                    <div className='port'>
                         {
-                            users.map(items => {
-                                return (
-                                    <User
-                                        key={items._id}
-                                        items={items}
-                                        array={array}
-                                        setArray={setArray}
-                                    />
-                                )
-                            })
+                            role === 'user' ? '' : <div className='port_user'>
+                                {
+                                    users.map(items => {
+                                        return (
+                                            <User
+                                                key={items._id}
+                                                items={items}
+                                                array={array}
+                                                setArray={setArray}
+                                            />
+                                        )
+                                    })
+                                }
+                            </div>
                         }
+                        <div className='port_active'>
+                            <h5>Users</h5>
+                            {
+                                arr.map((items, index) => {
+                                    return (
+                                        <p key={index}>{items.name}</p>
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
-                    <div className="control">
-                        <label>Group name</label>
-                        <input
-                            type="text"
-                            placeholder='Group name'
-                            value={group}
-                            onChange={(e) => {
-                                setGroup(e.target.value)
-                            }}
-                        />
+                    {
+                        array.length >= 2 ?
+                            (role === 'user' ? <div className='user'><p>Group name:</p><span>{group}</span></div> : <div className="control">
+                                <label>Group name</label>
+                                <input
+                                    type="text"
+                                    placeholder='Group name'
+                                    value={group}
+                                    onChange={(e) => {
+                                        setGroup(e.target.value)
+                                    }}
+                                />
+                            </div>) : ''
+                    }
+                    <div className='date'>
+                        {
+                            role === 'user' ? <div className='user'><p>Date:</p><span>{didlineDate.substring(0,10)}</span></div> : <div className="control">
+                                <label>Date</label>
+                                <InputMask
+                                    name="end"
+                                    mask="99.99.9999"
+                                    placeholder='date'
+                                    value={didlineDate}
+                                    onChange={(e) => setDidlineDate(e.target.value)}
+                                />
+                            </div>
+                        }
+                        {/* {
+                            role === 'user' ? '' : <div className="control">
+                                <label>Time</label>
+                                <InputMask
+                                    name="time"
+                                    mask="99:99"
+                                    placeholder='time'
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
+                                />
+                            </div>
+                        } */}
                     </div>
-                    <div className="control">
-                        <label>Date/Time</label>
-                        <InputMask
-                            name="end"
-                            mask="99.99.9999"
-                            placeholder='date'
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </div>
-                    <div 
-                    className='button'
-                    onClick={() => onSubmit()}
+                    <div
+                        className='button'
+                        onClick={() => onSubmit()}
                     >
                         save
                     </div>

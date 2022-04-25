@@ -1,13 +1,15 @@
 .menu{
+    position: fixed;
     width: 240px;
+    height: 100vh;
 }
 .menu ul{
     color: rgb(29,45,91);
     background-color: rgb(29,45,91);
-    padding-top: 100px;
+    padding-top: 150px;
     padding-left: 25px;
     margin: 0;
-    height: 100%;
+    height: 100vh;
 }
 .menu ul li{
     color: white;

@@ -151,8 +151,6 @@ const Message = ({ socket }) => {
         userDate(token)
     }, [token])
 
-    console.log("message", images)
-
 
     return (
         <div className='message'>
@@ -202,7 +200,7 @@ const Message = ({ socket }) => {
                     />
                 </div>
                 <div className="chatMenuWrapper">
-                    <div>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
                         <FaBars
                             className="faBars"
                             onClick={() => setShow(true)}

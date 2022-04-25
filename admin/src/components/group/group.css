@@ -35,6 +35,25 @@
     padding: 10px;
     z-index: 10;
 }
+.group .create .files{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.group .create .files .fa{
+    color: rgb(29,45,91);
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+.group .create .file-items{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    opacity: 0;
+}
 .group .create .faRight{
     border: none;
     outline: none;
@@ -91,7 +110,7 @@
 }
 .group .maps{
     padding: 10px 0;
-    height: 450px;
+    height: 400px;
     overflow-y: scroll;
     border-top: 1px solid #E5E5E5;
     border-bottom: 1px solid #E5E5E5;

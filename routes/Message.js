@@ -7,7 +7,7 @@ const router = Router()
 
 // add
 
-router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), (req, res) => {
+router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
 
     const {text, members, date, userImages} = req.body
     // const {imageMessage} = req.files
@@ -28,7 +28,7 @@ router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('ad
     })
 })
 
-router.post('/upload', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), (req, res) => {
+router.post('/upload', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
 
     const { members, date} = req.body
     // const {imageMessage} = req.files
@@ -53,7 +53,7 @@ router.post('/upload', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
 })
 
 // get message room
-router.get('/users', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), async (req, res) => {
+router.get('/users', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
     const {otherId} = req.query   
 
@@ -90,6 +90,27 @@ router.delete('/delete/:id', async (req, res) => {
     }catch(e){
         res.status(200).json({errorMessage: "Xato"})
     }
+})
+
+router.put('/view/:id', (req,res) => {
+     
+    const {id} = req.params
+
+    Message.findById(id, (err, oneMessage) => {
+        if (err) return res.status(400).json({errorMessage: "Xato"})
+
+        const view = oneMessage.view + 1
+
+        oneMessage.view = view
+
+        oneMessage.save(err => {
+            if (err) return res.status(400).json({errorMessage: "Xato"})
+            res.status(200).json({successMessage: `Ko'rildi`, view})
+        })
+
+    })
+
+
 })
 
 module.exports = router

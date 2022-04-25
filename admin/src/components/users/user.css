@@ -1,0 +1,51 @@
+.users{
+    padding: 40px;
+}
+.users ul{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    background: #f9f9f9;
+    margin-bottom: 20px;
+    padding: 5px;
+border-radius: 5px;
+}
+.users ul li{
+    position: relative;
+    text-align: center;
+    width: 15%;
+    list-style: none;
+    font-weight: 500;
+font-size: 18px;
+color: #3E3E3E;
+}
+.users .edit{
+    font-size: 24px;
+    cursor: pointer;
+}
+.users ul .role{
+    color: #758BFF;
+}
+.users ul .role.active{
+    color: #FA4D4D;
+}
+.users .modal{
+    position: absolute;
+    top: -20px;
+    right: 0;
+    background: #EEEEEE;
+border-radius: 8px;
+width: 100px;
+}
+.users .modal.active{
+    display: none;
+}
+.users ul li p{
+    font-weight: 500;
+font-size: 13px;
+color: #000000;
+margin: 6px 0;
+cursor: pointer;
+}

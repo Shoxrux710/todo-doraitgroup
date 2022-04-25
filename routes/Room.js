@@ -40,10 +40,9 @@ router.post('/', roomValidator, (req, res) => {
     })
 })
 
-router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), async (req, res) => {
+router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
     const { id } = req.user
-
 
     const group = await Room.find({
         array: { $in: [id] }
@@ -51,8 +50,8 @@ router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('adm
 
     res.status(200).json({ group })
 
-
 })
+
 
 // delete
 
@@ -60,11 +59,13 @@ router.delete('/delete/:id', async (req, res) => {
 
     const { id } = req.params
 
-
-    await Room.deleteOne({ _id: id })
-    await Group.deleteMany({ members: { $in: [id] } })
-    res.status(200).json({ successMessage: "Delete" })
-
+    try {
+        await Room.deleteOne({ _id: id })
+        await Group.deleteMany({ members: { $in: [id] } })
+        res.status(200).json({ successMessage: "Delete" })
+    } catch (e) {
+        res.status(200).json({ errorMessage: "Xato" })
+    }
 
 })
 

@@ -3,20 +3,11 @@ const multer = require('multer')
 const storage = multer.diskStorage({
 
     destination(req, file, cb){
-        if (file.fieldname === 'imageNews'){
-            cb(null, `./admin/public/news`)
-        }
-        if (file.fieldname === 'imagePort'){
-            cb(null, `./admin/public/post`)
-        }
         if (file.fieldname === 'groupImage'){
             cb(null, `./admin/public/group`)
         }
         if (file.fieldname === 'avatar'){
             cb(null, `./admin/public/avatar`)
-        }
-        if (file.fieldname === 'roomImage'){
-            cb(null, `./admin/public/room`)
         }
     },
 

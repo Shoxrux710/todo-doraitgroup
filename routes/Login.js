@@ -98,7 +98,7 @@ router.post('/login', authValidator, async (req, res) => {
 
 })
 
-router.get('/date', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), (req, res) => {
+router.get('/date', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
     res.status(200).json({
         user: req.user
     })
@@ -119,12 +119,10 @@ router.get('/all', async (req, res) => {
 
 })
 
-router.get('/other', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), async (req, res) => {
-
-    const { id } = req.user
+router.get('/other', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
     const user = await Login.find({
-        _id: { $nin: [id] }
+        role: { $nin: ['super-admin'] }
     })
     res.status(200).json({ user })
 
@@ -137,6 +135,25 @@ router.get('/query', async (req, res) => {
     const user = await Login.findById(userId)
     res.status(200).json(user)
 
+})
+
+router.put('/admin', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req,res) => {
+
+    const {id} = req.body
+
+    console.log(id)
+
+    Login.findById(id, (err, oneUser) => {
+        if (err) return res.status(400).json({errorMessage: "Xato"})
+
+        const roles = oneUser.role === 'user' ? 'admin' : 'user'
+        oneUser.role = roles
+
+        oneUser.save(err => {
+            if (err) return res.status(400).json({errorMessage: "Xato"})
+            res.status(200).json({successMessage: `admin bo'ldi`})
+        })
+    })
 })
 
 // profile update

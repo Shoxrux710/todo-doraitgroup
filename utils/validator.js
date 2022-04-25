@@ -26,9 +26,8 @@ exports.userValidator = [
 exports.taskValidator = [
     body('title').isLength({min: 1}),
     body('description').isLength({min: 1}),
-    body('group').isLength({min: 1}),
-    body('endDate').isLength({min: 1}),
+    body('didline').isLength({min: 1}),
     body('taskArray').isLength({min: 1}),
-    body('array').isLength({min: 1})
+    body('array').isLength({min: 1}),   
     
 ]

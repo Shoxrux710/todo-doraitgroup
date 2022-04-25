@@ -1,4 +1,4 @@
-import { USER_TO_PROFILE, LOGOUT, PROFILE_IMAGES, COUNT, TASK_SHOW, TASK_ID } from '../action/Types'
+import { USER_TO_PROFILE, LOGOUT, PROFILE_IMAGES, COUNT, TASK_SHOW, TASK_ID, TASK_CARD_CALL } from '../action/Types'
 
 const authData = JSON.parse(window.localStorage.getItem('auth'))
 const initilAuth = authData ? !!authData.token : false
@@ -15,7 +15,8 @@ const initilState = {
     image: null,
     count: null,
     task: true,
-    taskId: null
+    taskId: null,
+    call: false
 }
 
 const userReducers = (state = initilState, action) => {
@@ -67,6 +68,13 @@ const userReducers = (state = initilState, action) => {
             return {
                 ...state,
                 taskId: action.payload
+            }
+
+        case TASK_CARD_CALL:
+
+            return {
+                ...state,
+                call: !state.call
             }
 
         default:

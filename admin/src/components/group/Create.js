@@ -24,7 +24,7 @@ const Create = ({ create, setArray, array, show }) => {
 
   return (
     <div className="form_check">
-      <div className="users">
+      <div className="user">
         {images ?  <img src={`/avatar/${images}`} alt="" /> : <img src={person} alt="" />}
         <span>{create.name}</span>
       </div>

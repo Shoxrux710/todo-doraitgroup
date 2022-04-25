@@ -1,0 +1,21 @@
+.work .work_top{
+    display: flex;
+    border-bottom: 2px solid #F5F5F5;
+    margin-bottom: 40px;
+}
+.work h5{
+    font-weight: 500;
+    font-size: 18px;
+    color: #1D1D1D;
+    padding-bottom: 5px;
+    /* margin: 0px 25px; */
+    text-align: center;
+    width: 140px;
+    border-bottom: 4px solid white;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.work h5.active{
+    border-bottom: 4px solid #019267;
+border-radius: 2px;
+}

@@ -3,6 +3,7 @@ import Navbar from '../navbar/Navbar'
 import WorkAll from '../work/WorkAll'
 import Message from '../message/Message'
 import Group from '../group/Group'
+import User from '../users/User'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './header.css'
 
@@ -17,8 +18,10 @@ const Header = () => {
       <div className='home'>
         <Routes>
           <Route index path="/work" element={<WorkAll />} />
+          <Route index path="/users" element={<User/>} />
           <Route index path="/message" element={<Message socket={socket} />} />
           <Route index path="/group" element={<Group socket={socket} />} />
+          <Route path="*" element={<WorkAll />} />
         </Routes>
       </div>
     </div>

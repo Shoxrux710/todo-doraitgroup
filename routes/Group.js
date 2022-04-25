@@ -7,7 +7,7 @@ const router = Router()
 
 
 // post
-router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), (req, res) => {
+router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
 
     const { members, text, date, name, userImages } = req.body
     // const {filename} = req.files.roomImage[0]

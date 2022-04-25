@@ -24,7 +24,7 @@ const User = ({items, array, setArray}) => {
 
     return (
         <div className="form_check" key={items._id}>
-            <div className="users">
+            <div className="user">
                 <span>{items.name}</span>
             </div>
             <div

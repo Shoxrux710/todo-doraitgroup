@@ -88,7 +88,8 @@ io.on('connection', (socket) => {
 
 
 app.use(middleware.fields([
-    { name: 'avatar', maxCount: 1 }
+    { name: 'avatar', maxCount: 1 },
+    {name: 'groupImage', maxCount: 1}
 ]))
 
 app.use('/api/user', loginRouter)

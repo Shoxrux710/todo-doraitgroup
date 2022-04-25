@@ -8,13 +8,11 @@ const User = ({ user, setArray, show, array, setChecked, checked, setAvatarImage
     setChecked(id)
   }
 
-  console.log("array", user)
-
   const images = user.avatar ? user.avatar.fileName : ''
 
   return (
     <div className="form_check">
-      <div className="users">
+      <div className="user">
         {images ? <img src={`/avatar/${images}`} alt="" /> : <img src={person} alt="" />}
         <span>{user.name}</span>
       </div>
