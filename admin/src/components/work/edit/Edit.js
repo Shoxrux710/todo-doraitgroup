@@ -42,6 +42,7 @@ const Edit = ({ items, getOne, edit }) => {
             }
         }).then(response => {
             toast.success(response.data.successMessage)
+            dispatch(taskCall())
             getOne(group)
         }).catch(err => {
             console.log(err)
@@ -92,8 +93,6 @@ const Edit = ({ items, getOne, edit }) => {
     });
 
     
-    console.log("user", arr)
-    console.log("user", edit)
     return (
         <div
             className='item'
@@ -107,7 +106,7 @@ const Edit = ({ items, getOne, edit }) => {
                         onClick={() => setShow(!show)}
                     /> : ''
                 )
-            }
+            }            
             <div
                 className='border'
                 onClick={() => userId(items._id)}
@@ -152,7 +151,7 @@ const Edit = ({ items, getOne, edit }) => {
                 }
                 </div>
                 {
-                    items.status !== 'four' ? <button
+                    (items.status !== 'four') ? <button
                         style={{ backgroundColor: `${color}` }}
                         onClick={() => onStatus(items.status, items._id, items.group)}
                     >{button}</button> : ''

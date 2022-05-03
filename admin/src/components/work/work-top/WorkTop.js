@@ -2,15 +2,14 @@ import React from 'react'
 import './workTop.css'
 
 
-const WorkTop = ({ items, setGroupName, groupName }) => {
-
+const WorkTop = ({ items, setGroupName, groupName}) => {
     return (
         <h5
-            className={items.group === groupName ? 'active' : ''}
+            className={items === groupName ? 'active' : ''}
             onClick={() => {
-                setGroupName(items.group)
+                setGroupName(items)
             }}
-        >{items.group}</h5>
+        >{items}</h5>
     )
 }
 

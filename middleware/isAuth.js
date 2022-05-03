@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const config = require('config')
 
 module.exports = (req, res, next) => {
 
@@ -12,7 +13,7 @@ module.exports = (req, res, next) => {
 
     if (!token) return res.sendStatus(401)
 
-    jwt.verify(token, 'LIKMEKLSMDVLSKDMVOMVL', (err, user) => {
+    jwt.verify(token, config.get('jsonwebtoken'), (err, user) => {
         if (err) return res.sendStatus(403);
         req.decodedUser = {id: user.id}
         next()

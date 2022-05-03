@@ -20,7 +20,6 @@ const Login = () => {
             login,
             password
         }
-        console.log("user", user)
         axios.post('/api/user/login', user)
             .then(response => {
                 toast.success(response.data.msg)
@@ -33,7 +32,7 @@ const Login = () => {
 
     return (
         <div className="login">
-            <h2>Admin Panel</h2>
+            <h2>Logo</h2>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>login</label>

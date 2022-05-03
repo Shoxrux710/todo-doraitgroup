@@ -54,7 +54,6 @@ const Conversation = ({ message, count, userId, id, type, token, getGroup, role,
                                 onClick={() => oneUser(message._id)}
                             >delete
                             </div>
-                            <div>update</div>
                         </div>
                     </div>
                 ) : (

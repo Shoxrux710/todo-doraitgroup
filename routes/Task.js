@@ -9,8 +9,6 @@ const Task = require('../models/Task');
 const router = Router()
 
 
-
-
 router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), taskValidator, (req, res) => {
 
 
@@ -25,7 +23,7 @@ router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('us
         group,
         taskArray,
         array,
-        didline,
+        didlineDate,
         status
     } = req.body
 
@@ -37,13 +35,15 @@ router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('us
         group,
         taskArray,
         array,
-        didline,
+        didline: {
+            didlineDate
+        },
         status,
         date
     })
 
     task.save(err => {
-        if (err) return res.status(400).json({ errorMessage: `Xato ${err}` })
+        if (err) return res.status(400).json({ errorMessage: `Xato` })
         res.status(200).json({ successMessage: 'Vazifa kiritildi' })
     })
 
@@ -54,31 +54,17 @@ router.get('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('use
 
 
     const { groupName } = req.query
-    const { id } = req.user
+    const { id, role } = req.user
 
     console.log("group", groupName)
 
-    const taskOne = await Task.find({ status: 'one', group: groupName, array: { $in: [id] } })
-    const taskTwo = await Task.find({ status: 'two', group: groupName, array: { $in: [id] } })
-    const taskThree = await Task.find({ status: { $in: ['three', 'four'] }, group: groupName, array: { $in: [id] } })
-    const taskGroup = await Task.find({ group: { $nin: [''] }, array: { $in: [id] } })
+    const filterArray = role === 'user' ? {array: { $in: [id] }} : {}
 
-    res.status(200).json({
-        taskOne,
-        taskTwo,
-        taskThree,
-        taskGroup
-    })
-})
+    const taskOne = await Task.find({ status: 'one', group: groupName, ...filterArray })
+    const taskTwo = await Task.find({ status: 'two', group: groupName, ...filterArray })
+    const taskThree = await Task.find({ status: { $in: ['three', 'four'] }, group: groupName, ...filterArray })
+    const taskGroup = await Task.find({ group: { $nin: [''] }, ...filterArray })
 
-router.get('/admin', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
-
-    const { groupName } = req.query
-
-    const taskOne = await Task.find({ status: 'one', group: groupName })
-    const taskTwo = await Task.find({ status: 'two', group: groupName })
-    const taskThree = await Task.find({ status: { $in: ['three', 'four'] }, group: groupName })
-    const taskGroup = await Task.find({ group: { $nin: [''] } })
 
     res.status(200).json({
         taskOne,
@@ -93,30 +79,13 @@ router.get('/navbar/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
     const { userId } = req.query
     const { role } = req.user
     const { date, month, day, year } = nowDate()
-    console.log(date)
 
     const endDate = new Date(Date.UTC(year, month - 1, day + 29))
     const startDate = date
-    console.log(endDate)
+    const filterBoolean = role === 'user' ? {array: { $in: [userId] }} : {}
 
-    const didlineUser = await Task.find({
-        'didline.didlineDate': {
-            $gte: startDate,
-            $lte: endDate
-        },
-        'didline.isDidline': false,
-        array: { $in: [userId] }
-    })
+    const didlineTask = await Task.find({'didline.didlineDate': {$gte: startDate,$lte: endDate},'didline.isDidline': false, ...filterBoolean})
 
-    const didlineAdmin = await Task.find({
-        'didline.didlineDate': {
-            $gte: startDate,
-            $lte: endDate
-        },
-        'didline.isDidline': false
-    })
-
-    const didlineTask = role === 'user' ? didlineUser : didlineAdmin
     res.status(200).json({ didlineTask })
 
 })
@@ -146,14 +115,17 @@ router.put('/update/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
     const { color, id } = req.body
 
     let oneColor = color === 'one' ? 'two' : (color === 'two' ? 'three' : 'four')
+    let isFalse = oneColor === 'four' ? true : false
 
-    console.log(oneColor)
-    console.log(id)
+    // console.log(oneColors)
+    console.log(isFalse)
+
 
     Task.findById(id, (err, oneTask) => {
         if (err) return res.status(400).json({ errorMessage: "Xato" })
 
         oneTask.status = oneColor
+        isFalse ? oneTask.didline.isDidline = true : ''
 
         oneTask.save(err => {
             if (err) return res.status(400).json({ errorMessage: "Xato" })
@@ -190,10 +162,10 @@ router.put('/all/:id', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
         group,
         taskArray,
         array,
-        endDate,
+        didlineDate
     } = req.body
 
-    console.log(endDate)
+    console.log(req.body)
 
     Task.findById(id, (err, oneTask) => {
         if (err) return res.status(400).json({ errorMessage: "Xato" })
@@ -202,7 +174,10 @@ router.put('/all/:id', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
         oneTask.description = description
         oneTask.group = group
         oneTask.taskArray = taskArray
-        oneTask.endDate = endDate
+        oneTask.didline = {
+            isDidline: false,
+            didlineDate
+        }
         oneTask.array = array
 
         oneTask.save(err => {
@@ -212,31 +187,6 @@ router.put('/all/:id', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
 
     })
 })
-
-// router.put('/array/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('admin'), async (req, res) => {
-
-//     const { id, taskId } = req.body
-//     console.log(taskId)
-
-
-//     Task.findById(taskId, (err, oneTask) => {
-//         if (err) return res.status(400).json({ errorMessage: "Xato" })
-
-//         for (let i = 0; i < oneTask.taskArray.length; i++) {
-
-//             if (oneTask.taskArray[i]._id.toString() === id){
-//                 oneTask.taskArray[i].isClick = !oneTask.taskArray[i].isClick
-//             }
-//         }
-
-//         oneTask.save(err => {
-//             if (err) return res.status(400).json({ errorMessage: "Xato" })
-//             res.status(200).json({ successMessage: "Bajarildi" })
-//         })
-//     })
-
-
-// })
 
 
 module.exports = router

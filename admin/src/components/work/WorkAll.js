@@ -13,6 +13,7 @@ const WorkAll = () => {
     const [workThree, seteWorkThree] = useState([])
     const [workGroup, seteWorkGroup] = useState([])
     const [groupName, setGroupName] = useState('')
+    const [groups, setGroups] = useState([])
 
     const onGroup = (name) => {
         setShow(!show)
@@ -21,31 +22,24 @@ const WorkAll = () => {
     }
 
     const getOne = (groupName) => {
-        role === 'super-admin' || role === 'admin' ?
-            axios.get(`/api/task/admin?groupName=${groupName}`, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            }).then(response => {
-                seteWorkOne(response.data.taskOne)
-                seteWorkTwo(response.data.taskTwo)
-                seteWorkThree(response.data.taskThree)
-                seteWorkGroup(response.data.taskGroup)
-            }).catch(err => {
-                toast.error(err.response.data.errorMessage)
-            }) :
-            axios.get(`/api/task?groupName=${groupName}`, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            }).then(response => {
-                seteWorkOne(response.data.taskOne)
-                seteWorkTwo(response.data.taskTwo)
-                seteWorkThree(response.data.taskThree)
-                seteWorkGroup(response.data.taskGroup)
-            }).catch(err => {
-                toast.error(err.response.data.errorMessage)
+        axios.get(`/api/task?groupName=${groupName}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            seteWorkOne(response.data.taskOne)
+            seteWorkTwo(response.data.taskTwo)
+            seteWorkThree(response.data.taskThree)
+            seteWorkGroup(response.data.taskGroup)
+            let groupAll = []
+            response.data.taskGroup.forEach(e => {
+                groupAll.push(e.group)
             })
+            let data = [...new Set(groupAll)]
+            setGroups(data)
+        }).catch(err => {
+            toast.error(err.response.data.errorMessage)
+        })
 
     }
 
@@ -63,6 +57,7 @@ const WorkAll = () => {
                 workGroup={workGroup}
                 getOne={getOne}
                 show={show}
+                groups={groups}
                 setShow={setShow}
                 onGroup={onGroup}
                 setGroupName={setGroupName}

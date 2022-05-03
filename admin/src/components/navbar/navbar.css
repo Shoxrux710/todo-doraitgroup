@@ -15,11 +15,38 @@
     align-items: center;
 }
 .navbar .name{
+    position: relative;
     display: flex;
     align-items: center;
     color: rgb(29,45,91);
     font-size: 17px;
     font-weight: 500;
+    cursor: pointer;
+}
+.navbar .name ul{
+    z-index: 3;
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    height: 80px;
+    width: 100px;
+    background: white;
+    border-radius: 4px;
+    z-index: 90;
+    transition: all ease-in-out 0.1s;
+    box-shadow: 0 0 10px #E5E5E5;
+    border-top: 10px solid rgb(29,45,91);
+    cursor: pointer;
+}
+.navbar .name ul.active{
+    display: none;
+}
+.navbar .name ul li{
+    list-style: none;
+    padding: 4px 4px;
+    border-bottom: 1px solid rgb(29,45,91);
+    border-top: 1px solid rgb(29,45,91);
+    transition: all ease-in-out 0.3s;
 }
 .navbar .name .fa{
     margin-left: 5px;
@@ -67,10 +94,27 @@ color: rgb(29,45,91);
     margin-right: 20px;
     cursor: pointer;
 }
-.navbar .bell .button{
+.navbar .bell .out-block{
     position: fixed;
-    right: 180px;
-    top: 70px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+}
+.navbar .bell .out-user{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+}
+.navbar .bell .button{
+    z-index: 3;
+    position: absolute;
+    right: 0px;
+    top: 50px;
     height: 150px;
     width: 240px;
     border-top: 10px solid rgb(29,45,91);
@@ -86,7 +130,7 @@ color: rgb(29,45,91);
 }
 .navbar .bell .button .button-items{
     text-align: start;
-    padding: 8px;
+    padding: 10px 8px;
     border-bottom: 1px solid rgb(29,45,91);
     border-top: 1px solid rgb(29,45,91);
     transition: all ease-in-out 0.3s;

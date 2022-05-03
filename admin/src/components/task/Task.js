@@ -18,7 +18,7 @@ const Task = () => {
     const [title, setTitle] = useState("")
     const [group, setGroup] = useState("")
     const [didlineDate, setDidlineDate] = useState("")
-    // const [time, setTime] = useState("")
+    const [time, setTime] = useState("")
     const [description, setDescription] = useState("")
     const [array, setArray] = useState([])
     const [userAll, setUserAll] = useState([])
@@ -27,8 +27,9 @@ const Task = () => {
 
 
     const dateNow = didlineDate.split('.')
-    const endDates = new Date(Date.UTC(dateNow[2], dateNow[1] - 1, dateNow[0]))
-    const dateAfter = new Date(Date.UTC(dateNow[0], dateNow[1] - 1, dateNow[2]))
+    const timeNow = time.split(':')
+    const endDates = new Date(Date.UTC(dateNow[2], dateNow[1] - 1, dateNow[0], timeNow[0], timeNow[1]))
+
 
     const getUser = (token) => {
         axios.get(`/api/user/other`, {
@@ -63,9 +64,7 @@ const Task = () => {
             title,
             description,
             group,
-            didline: {
-                didlineDate: endDates
-            },
+            didlineDate: endDates,
             taskArray,
             array
         }
@@ -96,8 +95,19 @@ const Task = () => {
                     setArray(array)
                     setTaskArray(taskArray)
                     setDescription(description)
-                    setDidlineDate(didline.didlineDate)
-                    console.log("numer", didline.didlineDate)
+                    const didlineDate = new Date(didline.didlineDate);
+                    const year = didlineDate.getUTCFullYear()
+                    const day = didlineDate.getUTCDate()
+                    const month = didlineDate.getUTCMonth() + 1
+                    const hours = didlineDate.getUTCHours()
+                    const minutes = didlineDate.getUTCMinutes()
+                    const moon = month.toString().length === 1 ? `0${month}` : month
+                    const dayNow = day.toString().length === 1 ? `0${day}` : day
+                    const hour = hours.toString().length === 1 ? `0${hours}` : hours
+                    const minut = minutes.toString().length === 1 ? `0${minutes}` : minutes
+            
+                    setDidlineDate(`${dayNow}.${moon}.${year}`)
+                    setTime(`${hour}:${minut}`)
                 })
         }
     }, [taskId])
@@ -255,7 +265,7 @@ const Task = () => {
                                 />
                             </div>
                         }
-                        {/* {
+                        {
                             role === 'user' ? '' : <div className="control">
                                 <label>Time</label>
                                 <InputMask
@@ -266,7 +276,7 @@ const Task = () => {
                                     onChange={(e) => setTime(e.target.value)}
                                 />
                             </div>
-                        } */}
+                        }
                     </div>
                     <div
                         className='button'

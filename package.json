@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "server": "nodemon server.js",
+    "admin:install": "npm install --prefix ./admin",
+    "admin:build": "npm run build --prefix ./admin"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +22,8 @@
     "mongoose": "^6.2.10",
     "multer": "^1.4.4",
     "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

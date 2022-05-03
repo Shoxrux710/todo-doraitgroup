@@ -10,11 +10,12 @@ const checkRoleMiddleware = require('../middleware/checkRole')
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs')
+const config = require('config')
 const router = Router()
 
 const deleteOldImage = (fileName) => {
     return new Promise((resolve, reject) => {
-        fs.unlink(path.join(__dirname, `../admin/public/avatar/${fileName}`), (err) => {
+        fs.unlink(path.join(__dirname, `../admin/${config.get('imgFolder')}/avatar/${fileName}`), (err) => {
             resolve()
         })
     })
@@ -52,7 +53,7 @@ router.post('/register', registerValidator, async (req, res) => {
         id: userId._id,
     }
 
-    const token = jwt.sign(payload, "LIKMEKLSMDVLSKDMVOMVL");
+    const token = jwt.sign(payload, config.get('jsonwebtoken'));
 
     res.status(200).json({
         successMessage: "Register success",
@@ -87,7 +88,7 @@ router.post('/login', authValidator, async (req, res) => {
         id: user._id
     }
 
-    const token = jwt.sign(payload, "LIKMEKLSMDVLSKDMVOMVL");
+    const token = jwt.sign(payload, config.get('jsonwebtoken'));
 
     res.status(200).json({
         token,
@@ -121,8 +122,10 @@ router.get('/all', async (req, res) => {
 
 router.get('/other', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
+    const {id} = req.user
+
     const user = await Login.find({
-        role: { $nin: ['super-admin'] }
+        _id: { $nin: [id] }
     })
     res.status(200).json({ user })
 

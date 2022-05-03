@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const middleware = require('./middleware/file')
 const cors = require('cors')
 const Login = require('./models/Login')
+const path = require('path')
+const config = require('config')
 const bcrypt = require('bcryptjs')
 
 
@@ -41,43 +43,16 @@ io.on('connection', (socket) => {
         console.log(`User with ID: ${socket.id} joined room ${data}`)
     })
 
-    // socket.on("join_user", (data) => {
-    //     socket.join(data)
-    //     addUser(data)
-    //     console.log(`User with ID: ${socket.id} joined room ${data}`)
-    // })
-
     socket.on("send_message", (data) => {
         
-        console.log(data)
+        console.log("date",data)
         socket.to(data.members[1]).emit("receive_message", data)
     })
     socket.on("send_delete", async ({data, id}) => {
 
         await Message.deleteOne({_id: id})
-        // console.log(data)
-        // await socket.to(id).emit("receive_delete", data)
     })
 
-    // socket.on("user_message", (data) => {
-    //     console.log(data)
-    //     console.log("user", users)
-    //     const user = getUser(data.members[1])
-    //     console.log("1", user)
-    //     socket.to(user).emit("receive_message", data)
-    // })
-
-    
-
-    // socket.on("addUser", userId => {
-    //     addUser(userId, socket.id)  
-    //     io.emit("getUsers", users)
-    // })
-
-    // socket.on("sendMessage", ({otherId, messages}) => {
-    //     const user = getUser(otherId)
-    //     io.to(user.socketId).emit("get_message", messages)
-    // })
 
     socket.on('disconnect', () => {
         console.log("User disconnected", socket.id);
@@ -103,21 +78,32 @@ app.use(function (errorMessage, req, res, next) {
 })
 
 
-const PORT = 4005
+const PORT = config.get('port') || 4005
+
+
+if(process.env.NODE_ENV === 'production'){
+    app.use('/', express.static(path.join(__dirname, 'admin', 'build')))
+  
+  
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'admin', 'build', 'index.html'))
+    })
+  
+}  
 
 async function start() {
 
-    await mongoose.connect("mongodb://localhost:27017,localhost:27018,localhost:27019/chat",
-        { useNewUrlParser: true, useUnifiedTopology: true, replicaSet: 'myReplicaSet' })
+    await mongoose.connect(config.get('mongoUrl'),
+        { useNewUrlParser: true, useUnifiedTopology: true })
 
     const admin = await Login.findOne()
 
     if (!admin) {
-        const passwordHashed = await bcrypt.hash('123456', 12)
+        const passwordHashed = await bcrypt.hash('logoqwer123', 12)
 
         const user = new Login({
             name: 'Shavkat',
-            login: 'dora123',
+            login: 'logoItgroup',
             password: passwordHashed,
             role: 'super-admin'
         })

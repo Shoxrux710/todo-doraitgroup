@@ -1,0 +1,6 @@
+{
+    "port": 3000,
+    "mongoUrl": "mongodb+srv://center:710sh6465@cluster0.kzulh.mongodb.net/chat",
+    "imgFolder": "build",
+    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL"
+}

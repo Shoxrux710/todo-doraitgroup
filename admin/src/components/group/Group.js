@@ -123,7 +123,6 @@ const Group = ({ socket }) => {
 
     useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log(data)
             setMessage((list) => [...list, data])
         })
     }, [socket])
@@ -189,14 +188,14 @@ const Group = ({ socket }) => {
                         {
                             users.map((items) => {
                                 return (
-                                    <>
+                                    <div key={items._id}>
                                         <Create
                                             show={show}
                                             create={items}
                                             setArray={setArray}
                                             array={array}
                                         />
-                                    </>
+                                    </div>
                                 )
                             })
                         }
@@ -216,7 +215,7 @@ const Group = ({ socket }) => {
                 </form>
                 <div className="chatMenu">
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {role === 'super-admin' && <FaBars
+                        {role === 'user' ? '' : <FaBars
                             className="faBars"
                             onClick={() => setShow(true)}
                         />}
@@ -227,7 +226,9 @@ const Group = ({ socket }) => {
                     newGroup.length ?
                         newGroup.map((items) => {
                             return (
-                                <div onClick={() => {
+                                <div 
+                                key={items._id}
+                                onClick={() => {
                                     setCurrentChat(items)
                                     joinRoom(items._id)
                                     setMenu(!menu)

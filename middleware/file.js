@@ -1,13 +1,14 @@
 const multer = require('multer')
+const config = require('config')
 
 const storage = multer.diskStorage({
 
     destination(req, file, cb){
         if (file.fieldname === 'groupImage'){
-            cb(null, `./admin/public/group`)
+            cb(null, `./admin/${config.get('imgFolder')}/group`)
         }
         if (file.fieldname === 'avatar'){
-            cb(null, `./admin/public/avatar`)
+            cb(null, `./admin/${config.get('imgFolder')}/avatar`)
         }
     },
 

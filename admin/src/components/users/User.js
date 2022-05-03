@@ -26,9 +26,6 @@ const User = () => {
         getAll()
     }, [])
 
-
-    console.log("user", users)
-
     return (
         <div className='users'>
             <ul>

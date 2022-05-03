@@ -37,10 +37,10 @@ const Register = () => {
 
     return (
         <div className="register">
-            <h2>Ro'yxatdan o'tish</h2>
+            <h2>Register</h2>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
-                    <label>Ism</label>
+                    <label>Ism Familiya</label>
                     <input
                         type="text"
                         className="form-control"

@@ -3,13 +3,12 @@ import WorkTop from './work-top/WorkTop';
 import Edit from './edit/Edit'
 import './work.css'
 
-const Work = ({ workOne, workTwo, workThree, getOne, workGroup, show, onGroup, setGroupName, groupName }) => {
+const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, onGroup, setGroupName, groupName }) => {
 
 
 
-    const group = workGroup[0] ? workGroup[0].group : 'group'
-
-    console.log("sdfsdf", group)
+    const group = groups[0] ? groups[0] : 'group'
+ 
 
     return (
         <div className='work'>
@@ -26,12 +25,12 @@ const Work = ({ workOne, workTwo, workThree, getOne, workGroup, show, onGroup, s
             {
                 groupName ? <div className='work_top'>
                     {
-                        workGroup.map(items => {
+                       groups.map(items => {
                             return (
                                 <WorkTop
                                     setGroupName={setGroupName}
                                     groupName={groupName}
-                                    key={items._id}
+                                    key={items}
                                     items={items}
                                 />
                             )

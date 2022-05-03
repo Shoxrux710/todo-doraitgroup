@@ -9,9 +9,13 @@ import './header.css'
 
 import io from 'socket.io-client'
 
-const socket = io('ws://localhost:5000')
+const domen = window.location.hostname === 'localhost' ? 'ws://localhost:4005' : `ws://${window.location.hostname}:4000/`
+
+const socket = io(domen)
 
 const Header = () => {
+
+
   return (
     <div className='header'>
       <Navbar />

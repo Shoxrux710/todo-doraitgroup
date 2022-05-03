@@ -161,14 +161,14 @@ const Message = ({ socket }) => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         type="text"
-                        placeholder='group'
+                        placeholder='user'
                     />
                     <div className="maps">
                         {
                             users.length ?
                                 users.map((items) => {
                                     return (
-                                        <>
+                                        <div key={items._id}>
                                             <User
                                                 user={items}
                                                 setArray={setUserId}
@@ -178,7 +178,7 @@ const Message = ({ socket }) => {
                                                 setChecked={setChecked}
                                                 setAvatarImage={setAvatarImage}
                                             />
-                                        </>
+                                        </div>
                                     )
                                 }) : <div className="groupEmpty">
                                     <p>Empty</p>
@@ -211,7 +211,9 @@ const Message = ({ socket }) => {
                         newGroup.length ?
                             newGroup.map((items) => {
                                 return (
-                                    <div onClick={() => {
+                                    <div 
+                                    key={items._id}
+                                    onClick={() => {
                                         setCurrentChat(items)
                                         joinRoom(items._id)
                                         setMenu(!menu)
