@@ -1,6 +1,6 @@
 {
     "port": 3000,
-    "mongoUrl": "mongodb+srv://center:710sh6465@cluster0.kzulh.mongodb.net/chat",
+    "mongoUrl": "mongodb://chat:12345678@mongodb0.pbaby.uz:27017,mongodb1.pbaby.uz:27017,mongodb2.pbaby.uz:27017,mongodb0.planbaby.kg:27017/chat?authSource=chat",
     "imgFolder": "build",
     "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL"
 }

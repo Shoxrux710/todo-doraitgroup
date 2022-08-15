@@ -1,4 +1,4 @@
-const {Router} = require('express')
+const { Router } = require('express')
 const isAuthMiddleware = require('../middleware/isAuth');
 const attachUserMiddleware = require('../middleware/attachUser');
 const checkRoleMiddleware = require('../middleware/checkRole');
@@ -9,33 +9,33 @@ const router = Router()
 
 router.post('/', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
 
-    const {text, members, date, userImages} = req.body
+    const { text, members, date, userImages } = req.body
     // const {imageMessage} = req.files
 
     console.log(req.body)
     console.log(req.files)
 
     const messageNew = new Message({
-        text, 
+        text,
         date,
-        members,     
+        members,
         userImages
     })
 
     messageNew.save(err => {
-        if (err) return res.status(400).json({errorMessage: "Xato"})
-        res.status(200).json({successMessage: "Ok"})
+        if (err) return res.status(400).json({ errorMessage: "Xato" })
+        res.status(200).json({ successMessage: "Ok" })
     })
 })
 
 router.post('/upload', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
 
-    const { members, date} = req.body
+    const { members, date } = req.body
     // const {imageMessage} = req.files
 
     // console.log(req.body)
     console.log(req.files)
-    const {filename} = req.files.imageMessage[0]
+    const { filename } = req.files.imageMessage[0]
 
     const messageNew = new Message({
         date,
@@ -43,36 +43,36 @@ router.post('/upload', isAuthMiddleware, attachUserMiddleware, checkRoleMiddlewa
         imageMessage: {
             fileName: filename,
             fileUrl: `./message/${filename}`
-        }        
+        }
     })
 
     messageNew.save(err => {
-        if (err) return res.status(400).json({errorMessage: "Xato"})
-        res.status(200).json({successMessage: "Ok"})
+        if (err) return res.status(400).json({ errorMessage: "Xato" })
+        res.status(200).json({ successMessage: "Ok" })
     })
 })
 
 // get message room
 router.get('/users', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), async (req, res) => {
 
-    const {otherId} = req.query   
+    const { otherId } = req.query
 
     try {
-        const user = await Message.find({members: {$in: [otherId]}})
+        const user = await Message.find({ members: { $in: [otherId] } })
 
-        res.status(200).json({user})
+        res.status(200).json({ user })
     } catch (err) {
         console.log(err);
     }
 })
 router.get('/other', async (req, res) => {
 
-    const {messageId} = req.query   
+    const { messageId } = req.query
 
     try {
-        const user = await Message.find({_id: {$nin: [messageId]}})
+        const user = await Message.find({ _id: { $nin: [messageId] } })
 
-        res.status(200).json({user})
+        res.status(200).json({ user })
     } catch (err) {
         console.log(err);
     }
@@ -81,31 +81,33 @@ router.get('/other', async (req, res) => {
 // delete
 
 router.delete('/delete/:id', async (req, res) => {
-    
-    const {id} = req.params
 
-    try{
-        await Message.deleteOne({_id: id})
-        res.status(200).json({successMessage: "Delete"})
-    }catch(e){
-        res.status(200).json({errorMessage: "Xato"})
-    }
+    const { id } = req.params
+
+    console.log(id)
+
+    await Message.deleteOne({ _id: id })
+    res.status(200).json({ successMessage: "Delete" })
+
 })
 
-router.put('/view/:id', (req,res) => {
-     
-    const {id} = req.params
+router.put('/view/:id', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware('user'), (req, res) => {
+
+    const { id } = req.params
+    const { id: userId } = req.user
+
+    console.log("id", id)
 
     Message.findById(id, (err, oneMessage) => {
-        if (err) return res.status(400).json({errorMessage: "Xato"})
+        if (err) return res.status(400).json({ errorMessage: "Xato" })
 
         const view = oneMessage.view + 1
 
         oneMessage.view = view
 
         oneMessage.save(err => {
-            if (err) return res.status(400).json({errorMessage: "Xato"})
-            res.status(200).json({successMessage: `Ko'rildi`, view})
+            if (err) return res.status(400).json({ errorMessage: "Xato" })
+            res.status(200).json({ successMessage: `Ko'rildi`, view })
         })
 
     })

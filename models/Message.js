@@ -13,6 +13,10 @@ const messageSchema = new Schema({
     },
     userImages: {
         type: String
+    },
+    view: {
+        type: Number,
+        default: 0
     }
     
 })

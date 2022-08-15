@@ -14,6 +14,7 @@ const WorkAll = () => {
     const [workGroup, seteWorkGroup] = useState([])
     const [groupName, setGroupName] = useState('')
     const [groups, setGroups] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const onGroup = (name) => {
         setShow(!show)
@@ -37,6 +38,7 @@ const WorkAll = () => {
             })
             let data = [...new Set(groupAll)]
             setGroups(data)
+            setLoading(false)
         }).catch(err => {
             toast.error(err.response.data.errorMessage)
         })
@@ -62,6 +64,7 @@ const WorkAll = () => {
                 onGroup={onGroup}
                 setGroupName={setGroupName}
                 groupName={groupName}
+                loading={loading}
             />
         </div>
     )

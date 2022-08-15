@@ -9,6 +9,7 @@ const User = () => {
 
     const { token } = useSelector(state => state.userLogin)
     const [users, setUsers] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const getAll = () => {
         axios.get('/api/user/other', {
@@ -17,6 +18,7 @@ const User = () => {
             }
         }).then(response => {
             setUsers(response.data.user)
+            setLoading(false)
         }).catch(err => {
             toast.error(err.response.data.errorMessage)
         })
@@ -36,6 +38,7 @@ const User = () => {
                 <li>Edit</li>
             </ul>
             {
+                loading ? <div>Loading</div> :
                 users.map(items => {
                     return (
                         <UserId

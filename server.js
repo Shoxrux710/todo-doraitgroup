@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const middleware = require('./middleware/file')
 const cors = require('cors')
 const Login = require('./models/Login')
+const Message = require('./models/Message')
 const path = require('path')
 const config = require('config')
 const bcrypt = require('bcryptjs')
@@ -48,9 +49,10 @@ io.on('connection', (socket) => {
         console.log("date",data)
         socket.to(data.members[1]).emit("receive_message", data)
     })
-    socket.on("send_delete", async ({data, id}) => {
+    socket.on("send_delete", async ({data, messageId}) => {
 
-        await Message.deleteOne({_id: id})
+        await Message.deleteOne({_id: messageId})
+        socket.to(data.members[1]).emit("data_message", data)
     })
 
 
@@ -72,7 +74,7 @@ app.use('/api/group/', groupRouter)
 app.use('/api/message/', messageRouter)
 app.use('/api/room/', roomRouter)
 app.use('/api/users/', userRouter)
-app.use('/api/task/', taskRouter)
+app.use('/api/task/', taskRouter) 
 app.use(function (errorMessage, req, res, next) {
     res.status(400).json(`Serverda xato ${errorMessage}`)
 })
@@ -91,10 +93,10 @@ if(process.env.NODE_ENV === 'production'){
   
 }  
 
-async function start() {
+async function start() {                                                                                                        
 
     await mongoose.connect(config.get('mongoUrl'),
-        { useNewUrlParser: true, useUnifiedTopology: true })
+        { useNewUrlParser: true, useUnifiedTopology: true, replicaSet: "mainReplicaSet" })
 
     const admin = await Login.findOne()
 

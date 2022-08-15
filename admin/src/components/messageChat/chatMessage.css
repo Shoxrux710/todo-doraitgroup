@@ -47,6 +47,21 @@
     right: 4%;
     font-size: 13px;
 }
+.chatMessage .modal{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 400px;
+    min-height: 250px;
+    background: rgba(48, 48, 48, 0.81);
+    z-index: 100;
+}
+.chatMessage .modal.active{
+    display: none;
+}
 @media(max-width: 767px){
     .chatMessage img{
         height: 35px;

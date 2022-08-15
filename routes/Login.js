@@ -124,9 +124,7 @@ router.get('/other', isAuthMiddleware, attachUserMiddleware, checkRoleMiddleware
 
     const {id} = req.user
 
-    const user = await Login.find({
-        _id: { $nin: [id] }
-    })
+    const user = await Login.find({ role: {$nin: ['super-admin']}, _id: {$nin: [id]}})
     res.status(200).json({ user })
 
 })

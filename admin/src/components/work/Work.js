@@ -3,7 +3,7 @@ import WorkTop from './work-top/WorkTop';
 import Edit from './edit/Edit'
 import './work.css'
 
-const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, onGroup, setGroupName, groupName }) => {
+const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, onGroup, setGroupName, groupName, loading }) => {
 
 
 
@@ -42,6 +42,7 @@ const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, o
                 <div className='work_item'>
                     <div className='title'>Berildi</div>
                     {
+                        loading ? <div>Loading</div> :
                         workOne.map(items => {
                             return (
                                 <Edit
@@ -57,6 +58,7 @@ const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, o
                 <div className='work_item'>
                     <div className='title'>Jarayonda</div>
                     {
+                        loading ? <div>Loading</div> :
                         workTwo.map(items => {
                             return (
                                 <Edit
@@ -72,6 +74,7 @@ const Work = ({ workOne, workTwo, workThree, getOne, workGroup, groups,  show, o
                 <div className='work_item'>
                     <div className='title'>Tugatildi</div>
                     {
+                        loading ? <div>Loading</div> :
                         workThree.map(items => {
                             return (
                                 <Edit
