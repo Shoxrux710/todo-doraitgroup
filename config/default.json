@@ -2,6 +2,5 @@
     "port": 4005,
     "mongoUrl": "mongodb://localhost:27018,localhost:27019,localhost:27020/chat",
     "imgFolder": "public",
-    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL",
-    "resliset": "myReplicaSet"
+    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL"
 }

@@ -96,7 +96,7 @@ if(process.env.NODE_ENV === 'production'){
 async function start() {                                                                                                        
 
     await mongoose.connect(config.get('mongoUrl'),
-        { useNewUrlParser: true, useUnifiedTopology: true, replicaSet: config.get('resliset') })
+        { useNewUrlParser: true, useUnifiedTopology: true, replicaSet: "myReplicaSet" })
 
     const admin = await Login.findOne()
 

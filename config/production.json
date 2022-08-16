@@ -1,7 +1,6 @@
 {
     "port": 4008,
-    "mongoUrl": "mongodb://lacolhost:27018,lacolhost:27019,lacolhost:27020/chat",
+    "mongoUrl": "mongodb://lacolhost:27017,lacolhost:27018,lacolhost:27019/chat",
     "imgFolder": "build",
-    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL",
-    "resliset": "mainReplySet"
+    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL"
 }
