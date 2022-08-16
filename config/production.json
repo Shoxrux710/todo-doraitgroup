@@ -1,6 +1,7 @@
 {
     "port": 3000,
-    "mongoUrl": "mongodb://chat:12345678@mongodb0.pbaby.uz:27017,mongodb1.pbaby.uz:27017,mongodb2.pbaby.uz:27017,mongodb0.planbaby.kg:27017/chat?authSource=chat",
+    "mongoUrl": "mongodb://lacolhost:27018,lacolhost:27019,lacolhost:27020/chat",
     "imgFolder": "build",
-    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL"
+    "jsonwebtoken": "LIKMEKLSMDVLSKDMVOMVL",
+    "resliset": "mainReplicaSet"
 }
